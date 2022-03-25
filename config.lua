@@ -1,6 +1,6 @@
 Config = {
 	------------
-	discord_webhook = "https://discord.com/api/webhooks/956880541267939389/aqru5dkppVQ2t58zGch4WbfddFOLDL0c1wzdJaK98KSaZxm52ouemy7o2TAI8YRJKaV0",
+	discord_webhook = "DISCORD",
 	------------
 	ColorMenuR = 252, -- Bannière couleur R
 	ColorMenuG = 136, -- Bannière couleur G
