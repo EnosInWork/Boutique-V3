@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css?family=Prompt');
+
+.raffle-roller {
+    	height: 190px;
+    	position: relative;
+    	margin: 60px auto 90px auto;
+    	width: 900px;
+}
+.raffle-roller-holder {
+    	position: absolute;
+    	top: 0;
+    	left: 0;
+    	right: 0;
+    	bottom: 0;
+    	height: 190px;
+    	width: 100%;
+}
+.raffle-roller-holder {
+    	overflow: hidden;
+    	border-radius: 10px;
+	border: 1px solid #555;
+}
+.raffle-roller-holder {
+    	position: absolute;
+    	top: 0;
+    	left: 0;
+    	right: 0;
+    	bottom: 0;
+    	height: 190px;
+    	width: 100%;
+}
+.raffle-roller-container {
+    	width: 9999999999999999999px;
+    	max-width: 999999999999999999px;
+    	height: 190px;
+    	background: #162133;
+    	margin-left: 0;
+    	-webkit-transition: all 3s cubic-bezier(.215,.61,.355,1);
+    	transition: all 8s cubic-bezier(.08,.6,0,1);
+}
+.no-transition {
+	transition: 1s margin-left !important;
+}
+.winning-item {
+	border: 4px solid #3ebc55;
+	position: relative;
+	top: -4px;
+}
+#round_draw_pointer {
+    	height: 100%;
+    	width: 2px;
+    	position: absolute;
+    	left: 0;
+    	right: 0;
+	left: 50%;
+    	z-index: 99;
+}
+#round_draw_pointer_top {
+    	position: absolute;
+    	top: 0;
+	left: 50%;
+    	width: 0;
+    	height: 0;
+    	border-left: 9px solid transparent;
+    	border-right: 9px solid transparent;
+    	border-top: 9px solid #666666;
+    	font-size: 0;
+    	line-height: 0;
+    	z-index: 5;
+}
+#round_draw_pointer_bot {
+    	display: none;
+    	position: absolute;
+    	bottom: -1px;
+    	width: 0;
+    	height: 0;
+	left: 50%;
+    	border-left: 9px solid transparent;
+    	border-right: 9px solid transparent;
+    	border-bottom: 9px solid #666666;
+    	font-size: 0;
+    	line-height: 0;
+    	z-index: 5;
+}
+#round_draw_pointer_mid {
+    	position: absolute;
+    	top: 0;
+    	left: 50%;
+	margin-left: 8px;
+    	width: 3px;
+    	height: 100%;
+    	background: #ffffff;
+}
+.case_item {
+    	display: inline-block;
+	position: relative;
+   	width: 150px;
+    	overflow: hidden;
+    	float: left;
+	margin: 8px 0 0 9px;
+	height: 174px;
+    	border-radius: 0;
+	background: linear-gradient(to left, #136a8a , #267871);
+}
+.case_item > .bottom-skin5 {
+	font-family: 'Prompt', serif;
+	background: #e5c300;
+	position: absolute;
+	z-index: 3;
+    	width: 100%;
+    	height: 28px;
+    	text-align: center;
+    	color: #fff;
+    	font-size: 11px;
+    	bottom: 0;
+    	border-bottom-left-radius: 2px;
+    	border-bottom-right-radius: 2px;
+    	padding: 5px 0;
+    	line-height: 12px;
+}
+.case_item > .bottom-skin4 {
+	font-family: 'Prompt', serif;
+	background: #ff0015;
+	position: absolute;
+	z-index: 3;
+    	width: 100%;
+    	height: 28px;
+    	text-align: center;
+    	color: #fff;
+    	font-size: 11px;
+    	bottom: 0;
+    	border-bottom-left-radius: 2px;
+    	border-bottom-right-radius: 2px;
+    	padding: 5px 0;
+    	line-height: 12px;
+}
+.case_item > .bottom-skin3 {
+	font-family: 'Prompt', serif;
+	background: #ff006f;
+	position: absolute;
+	z-index: 3;
+    	width: 100%;
+    	height: 28px;
+    	text-align: center;
+    	color: #fff;
+    	font-size: 11px;
+    	bottom: 0;
+    	border-bottom-left-radius: 2px;
+    	border-bottom-right-radius: 2px;
+    	padding: 5px 0;
+    	line-height: 12px;
+}
+.case_item > .bottom-skin2 {
+	font-family: 'Prompt', serif;
+	background: #6666ff;
+	position: absolute;
+	z-index: 3;
+    	width: 100%;
+    	height: 28px;
+    	text-align: center;
+    	color: #fff;
+    	font-size: 11px;
+    	bottom: 0;
+    	border-bottom-left-radius: 2px;
+    	border-bottom-right-radius: 2px;
+    	padding: 5px 0;
+    	line-height: 12px;
+}
+.case_item > .bottom-skin1 {
+	font-family: 'Prompt', serif;
+	background: #006600;
+	position: absolute;
+	z-index: 3;
+    	width: 100%;
+    	height: 28px;
+    	text-align: center;
+    	color: #fff;
+    	font-size: 11px;
+    	bottom: 0;
+    	border-bottom-left-radius: 2px;
+    	border-bottom-right-radius: 2px;
+    	padding: 5px 0;
+    	line-height: 12px;
+}
+img {
+	border: 0;
+}
+.case_item_image {
+	position: absolute;
+    	z-index: 2;
+    	width: 140px;
+    	height: auto;
+    	left: 0;
+    	top: 0;
+}
+.case_item_shadow {
+	position: absolute;
+    	z-index: 1;
+    	width: 120px;
+    	height: auto;
+    	left: 0;
+    	right: 0;
+    	bottom: 35px;
+    	margin: 0 auto;
+}
