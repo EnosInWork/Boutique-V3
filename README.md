@@ -4,5 +4,7 @@
 
 [Vidéo présentation](https://youtu.be/NbIqcEz4O5I)
 
-<p>/giveid</p>
-<p>/giveidboutique</p>
+<p><strong>/giveid</strong></p> 
+<p>For online player</p>
+<p><strong>/giveidboutique</strong></p> 
+<p>For disconnect player</p>
