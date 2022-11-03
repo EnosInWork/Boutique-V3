@@ -183,17 +183,18 @@ RegisterCommand("giveidboutique", function(source, args, raw)
     local id    = args[1]
     local point = args[2]
     if source == 0 then 
-       PerformHttpRequest(Config.discord_webhook, function(err, text, headers) end, 'POST', json.encode({username = "Boutique Logs", content = "[Give ID Boutique]\n Give de "..point.." points sur l'id boutique >> "..id}), { ['Content-Type'] = 'application/json' })
-        MySQL.Async.fetchAll('SELECT * FROM users WHERE boutique_id=@boutique_id', {
-            ['@boutique_id'] = license
+        PerformHttpRequest(Config.discord_webhook, function(err, text, headers) end, 'POST', json.encode({username = "Boutique Logs", content = "[Give ID Boutique]\n Give de "..point.." points sur l'id boutique >> "..id}), { ['Content-Type'] = 'application/json' })
+        MySQL.Async.fetchAll('SELECT * FROM users WHERE boutique_id = @boutique_id', {
+            ['@boutique_id'] = tonumber(id)
         }, function(data)
             local poi = data[1].pb
-            npoint = poi + point
+            npoint = tonumber(poi) + tonumber(point)
     
-            MySQL.Async.execute('UPDATE `users` SET `pb`=@point  WHERE boutique_id=@boutique_id', {
-                ['@boutique_id'] = license,
+            MySQL.Async.execute('UPDATE users SET pb = @point WHERE boutique_id = @boutique_id', {
+                ['@boutique_id'] = tonumber(id),
                 ['@point'] = npoint 
             }, function(rowsChange)
+                print("Vous venez de donner " .. tostring(npoint) .. " à l'id boutique : " .. tostring(id))
             end)
         end)
     else
