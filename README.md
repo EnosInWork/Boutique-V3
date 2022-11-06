@@ -1,4 +1,4 @@
-# Boutique-V3
+# boutiquev3
  
 [Clique ici pour rejoindre le Discord](https://discord.gg/5dev)
 
