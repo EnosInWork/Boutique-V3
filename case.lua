@@ -1,14 +1,5 @@
 local script_active = true
-ESX = nil
 local draw = {}
-
-Citizen.CreateThread(function()
-	while ESX == nil do
-		TriggerEvent("esx:getSharedObject", function(obj) ESX = obj end)
-		Citizen.Wait(0)
-	end	
-end)
-
 
 RegisterNUICallback('NUI:OFF', function(data, cb)
 	SetNuiFocus(false,false)
@@ -16,7 +7,6 @@ RegisterNUICallback('NUI:OFF', function(data, cb)
         type = "off"
     })
 end)
-
 
 RegisterNetEvent("Open:Case")
 AddEventHandler("Open:Case", function(data)
