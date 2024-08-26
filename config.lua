@@ -1,4 +1,9 @@
 Config = {
+	-- 1 = ESX 1.1 (Old ESX With trigger) 
+    -- 2 = (New ESX With Export) 
+    Framework = 1, 
+    Extended_Name = "es_extended",
+    getSharedObject = "esx:getSharedObject",
 	------------
 	discord_webhook = "DISCORD",
 	------------

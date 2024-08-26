@@ -1,35 +1,18 @@
-ESX = nil
+if Config.Framework == 1 then
+    ESX = nil
+    Citizen.CreateThread(function()
+        while ESX == nil do
+            TriggerEvent(Config.getSharedObject, function(obj) ESX = obj end)
+            Citizen.Wait(500)
+        end
+    end)
+elseif Config.Framework == 2 then 
+    ESX = exports[Config.Extended_Name]:getSharedObject()
+end
 
 local IsDead = false
 local GarageOption = false
 local voituregive = {}
-
-Citizen.CreateThread(function()
-	TriggerServerEvent('boutique:getpoints')
-	if pointjoueur == nil then pointjoueur = 0 end
-	while ESX == nil do
-        TriggerEvent("esx:getSharedObject", function(obj) ESX = obj end)
-        Citizen.Wait(100)
-	end
-end)
-
-Citizen.CreateThread(function()
-    while ESX == nil do
-        TriggerEvent("esx:getSharedObject", function(obj) ESX = obj end)
-        ESX.TriggerServerCallback('boutique:GetCodeBoutique', function(thecode)
-            code = thecode
-        end)
-    end
-end)
-
-Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(2000)
-        ESX.TriggerServerCallback('boutique:GetCodeBoutique', function(thecode)
-            code = thecode
-        end)
-    end    
-end)
 
 RegisterNetEvent('boutique:retupoints')
 AddEventHandler('boutique:retupoints', function(point)
@@ -433,7 +416,10 @@ end
 
 RegisterCommand('boutique', function()
     TriggerServerEvent('boutique:getpoints')
-    OpenBoutique()
+    ESX.TriggerServerCallback('boutique:GetCodeBoutique', function(thecode)
+        code = thecode
+        OpenBoutique()
+    end)
 end, false)
 RegisterKeyMapping('boutique', 'Ouvrir menu boutique', 'keyboard', 'F9')
     

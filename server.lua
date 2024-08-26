@@ -1,6 +1,9 @@
-ESX = nil
-
-TriggerEvent("esx:getSharedObject", function(obj) ESX = obj end)
+if Config.Framework == 1 then
+    ESX = nil
+    TriggerEvent(Config.getSharedObject, function(obj) ESX = obj end)
+elseif Config.Framework == 2 then 
+    ESX = exports[Config.Extended_Name]:getSharedObject()
+end
 
 Citizen.CreateThread(function()
     while true do
