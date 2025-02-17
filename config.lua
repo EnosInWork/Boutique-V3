@@ -1,41 +1,58 @@
 Config = {
-	-- 1 = ESX 1.1 (Old ESX With trigger) 
-    -- 2 = (New ESX With Export) 
-    Framework = 1, 
-    Extended_Name = "es_extended",
-    getSharedObject = "esx:getSharedObject",
-	------------
-	discord_webhook = "DISCORD",
-	------------
-	ColorMenuR = 252, -- Bannière couleur R
-	ColorMenuG = 136, -- Bannière couleur G
-	ColorMenuB = 3, -- Bannière couleur B
-	ColorMenuA = 170, -- Bannière couleur A
-	MenuPositionX = 0,
-	MenuPositionY = 0,
-	------------
-	MenuName = "Boutique",
-	SubMenuName = "~o~5-Dev",
-	------------
-	TimeMessage = "90000", -- in ms (90 secondes)
-	AutoMessage = "N'hésitez pas à jeter un coup d'oeil à notre boutique (F11) !",
-	------------
-	CreditName = "Crédit(s)", 
-	------------
-	img_notif = "CHAR_SOCIAL_CLUB",
-	------------
+
+	Framework = {
+		ESX_Legacy = true, -- or false
+		ExtendedName = "es_extended", -- extended name
+		SharedEvent = "esx:getSharedObject", -- shared event
+		useOxInventory = false,
+		Mysql = "oxmysql",
+	},
+
+	Menu = {
+		MenuName = "Boutique",
+		SubMenuName = "5-Dev",
+		ColorBanner = {252, 136, 3, 170}, -- R/G/B/A (A = opacity)
+		ColorText = {"~b~", "~y~"}, -- Primary Color / Secondary
+		CreditName = "Crédit(s)", 
+	},
+
+	AutoNotif = {
+		Active = true, 
+		TimeMessage = 60, -- minutes
+		AutoMessage = "N'hésitez pas à jeter un coup d'oeil à notre boutique (F9) !",
+	},
+
+	Notification = function(message)
+		TriggerEvent('esx:showNotification', "~g~"..message)
+	end,
+
 	LicenceSysteme = "steam", -- steam / licence options
-	------------
 	ActivePromo = true, 
 	PromoCode = "cEnos",
-	------------
 	EchangePoint = true,
+
 	------------------------------------------------------------------------------------------------
+
 	ActiveVeh = true, 
-	ExportName = "rConcess",
-	CustomPrice = 200,
+
+    PlateFormat = "LLLLNNNN",    -- Change this to your preferred format insert plate. L = letters, N = numbers. 
+    -- Example : (LLLLNNNN = AAAA1234)
+    -- Example : (NNNNLLLL = 0000AAAA) 
+    -- Example : (NNLL = 00AA) 
+    -- look at the format of your plates in your owned_vehicles table
+
+    TableNameVehicle = "owned_vehicles", -- votre table SQL qui stock véhicule garage
+
+	StoredColumnName = "stored", -- "stored" / "state" / the name of your column that allows the vehicle to be garaged
+
+	ValueStoredOnGarage = 1, -- the value that puts the vehicle in the garage
+
+	ValueVehicleOut = 0, -- Valeur véhicule dehors
+
+	CustomPrice = 200, -- Prix de la full custom
+
 	ListVeh = {
-		{category = "↓ ~r~Import~s~ ↓"}, -- exemple of categorie
+		{category = "↓ Import ↓"}, -- exemple of categorie
 		{img = "bolide", name = "Bugatti Bolide" , model = "rmodbugatti", point = 1000, place = 2, vitesse = 450},
 		{img = "voiturenoire", name = "La Voiture Noire" , model = "rmodbolide", point = 1000, place = 2, vitesse = 449},
 		{img = "charger", name = "Dodge Charger 69" , model = "rmodcharger69", point = 1000, place = 2, vitesse = 448},
@@ -49,10 +66,12 @@ Config = {
 		{img = "skyline", name = "Nissan Skyline R34" , model = "rmodskyline34", point = 1000, place = 2, vitesse = 440},
 		{img = "zl1", name = "Chevrolet Camaro ZL1" , model = "rmodzl1", point = 1000, place = 2, vitesse = 439}
 	},
+
 	------------------------------------------------------------------------------------------------
+
 	ActiveWeapon = true, 
 	WeaponList = {
-		{category = "↓ ~r~Weapon~s~ ↓"}, -- exemple of categorie
+		{category = "↓ Weapon ↓"}, -- exemple of categorie
 		{img = "Screenshot_127", name = "Couteau" , model = "weapon_knife", point = 10},
 		{img = "baseball-bat", name = "Bat de baseball" , model = "weapon_bat", point = 10},
 		{img = "hachet", name = "Hachette" , model = "weapon_machete", point = 10},
@@ -64,23 +83,28 @@ Config = {
 		{img = "m4", name = "M4" , model = "weapon_carbinerifle", point = 4200},
 		{img = "sniper", name = "Sniper" , model = "weapon_sniperrifle", point = 5000}
 	}, 
+
 	------------------------------------------------------------------------------------------------
+
 	ActiveMoney = true, 
 	MoneyList = {
-		{category = "↓ ~r~Money Pack~s~ ↓"}, -- exemple of categorie
+		{category = "↓ Money Pack ↓"}, -- exemple of categorie
 		{img = "money", name = "10,000$" , model = 10000, point = 500},
 		{img = "money", name = "20,000$" , model = 20000, point = 1000},
 		{img = "money", name = "45,000$" , model = 45000, point = 1500},
 		{img = "money", name = "75,000$" , model = 75000, point = 2000}
 	},
+
 	------------------------------------------------------------------------------------------------
+
 	ActiveCaisse = true, 
 	LesCaisse = {
-		{category = "↓ ~r~Box Pack~s~ ↓"}, -- exemple of categorie
+		{category = "↓ Box Pack ↓"}, -- exemple of categorie
 		{img = "gold_case", name = "Gold Box" , item = "gold_case", point = 1000, lootdesc = "Bugatti, AK-47, 75,000$"},
 		{img = "ruby_case", name = "Ruby Box" , item = "ruby_case", point = 750, lootdesc = "BMW M5, SMG, 50,000$"},
 		{img = "diamond_case", name = "Diamond Box" , item = "diamond_case", point = 500, lootdesc = "Nissan Skyline, Pistolet de combat, 25,000$"},
-	}
+	},
+
 }
 ------------------------------------------------------------------------------------------------
 

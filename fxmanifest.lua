@@ -4,9 +4,12 @@ game 'gta5'
 
 ui_page "html/ui.html"
 
+shared_scripts {
+    "config.lua",
+}
+
 server_scripts {
     '@mysql-async/lib/MySQL.lua',
-    'config.lua',
     'server.lua',
 }
 
@@ -20,7 +23,6 @@ client_scripts {
     "src/menu/items/*.lua",
     "src/menu/panels/*.lua",
     "src/menu/windows/*.lua",
-    "config.lua",
     "client.lua",
     "case.lua",
 }

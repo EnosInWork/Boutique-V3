@@ -1,13 +1,13 @@
-if Config.Framework == 1 then
+if Config.Framework.ESX_Legacy then 
+    ESX = exports[Config.Framework.ExtendedName]:getSharedObject()
+else
     ESX = nil
     Citizen.CreateThread(function()
         while ESX == nil do
-            TriggerEvent(Config.getSharedObject, function(obj) ESX = obj end)
+            TriggerEvent(Config.Framework.SharedEvent, function(obj) ESX = obj end)
             Citizen.Wait(500)
         end
     end)
-elseif Config.Framework == 2 then 
-    ESX = exports[Config.Extended_Name]:getSharedObject()
 end
 
 local IsDead = false
@@ -57,33 +57,28 @@ curentvehicle_finalpoint = 0
 local codepromo = false
 
 function OpenBoutique()
-    local menu = RageUI.CreateMenu(Config.MenuName, Config.SubMenuName)
-    local vehiclemenu = RageUI.CreateSubMenu(menu, "Véhicules", Config.SubMenuName)
-    local vehiclemenuparam = RageUI.CreateSubMenu(menu, "Paramètres", Config.SubMenuName)
-    local armesmenu = RageUI.CreateSubMenu(menu, "Armes", Config.SubMenuName)
-    local moneymenu = RageUI.CreateSubMenu(menu, "Argent", Config.SubMenuName)
-    local caissemenu = RageUI.CreateSubMenu(menu, "Caisse", Config.SubMenuName)
-    local optionsmenu = RageUI.CreateSubMenu(menu, "Options", Config.SubMenuName)
-    --------------------------------------------------------------------------------
-    menu:SetRectangleBanner(Config.ColorMenuR, Config.ColorMenuG, Config.ColorMenuB, Config.ColorMenuA)
-    vehiclemenu:SetRectangleBanner(Config.ColorMenuR, Config.ColorMenuG, Config.ColorMenuB, Config.ColorMenuA)
-    vehiclemenuparam:SetRectangleBanner(Config.ColorMenuR, Config.ColorMenuG, Config.ColorMenuB, Config.ColorMenuA)
-    armesmenu:SetRectangleBanner(Config.ColorMenuR, Config.ColorMenuG, Config.ColorMenuB, Config.ColorMenuA)
-    moneymenu:SetRectangleBanner(Config.ColorMenuR, Config.ColorMenuG, Config.ColorMenuB, Config.ColorMenuA)
-    caissemenu:SetRectangleBanner(Config.ColorMenuR, Config.ColorMenuG, Config.ColorMenuB, Config.ColorMenuA)
-    optionsmenu:SetRectangleBanner(Config.ColorMenuR, Config.ColorMenuG, Config.ColorMenuB, Config.ColorMenuA)
-    --------------------------------------------------------------------------------
-    menu.Closable = false
-    --------------------------------------------------------------------------------
+    local menu = RageUI.CreateMenu(Config.Menu.MenuName, Config.Menu.SubMenuName)
+    local vehiclemenu = RageUI.CreateSubMenu(menu, "Véhicules", Config.Menu.SubMenuName)
+    local vehiclemenuparam = RageUI.CreateSubMenu(menu, "Paramètres", Config.Menu.SubMenuName)
+    local armesmenu = RageUI.CreateSubMenu(menu, "Armes", Config.Menu.SubMenuName)
+    local moneymenu = RageUI.CreateSubMenu(menu, "Argent", Config.Menu.SubMenuName)
+    local caissemenu = RageUI.CreateSubMenu(menu, "Caisse", Config.Menu.SubMenuName)
+    local optionsmenu = RageUI.CreateSubMenu(menu, "Options", Config.Menu.SubMenuName)
+    menu:SetRectangleBanner(Config.Menu.ColorBanner[1], Config.Menu.ColorBanner[2], Config.Menu.ColorBanner[3], Config.Menu.ColorBanner[4])
+    vehiclemenu:SetRectangleBanner(Config.Menu.ColorBanner[1], Config.Menu.ColorBanner[2], Config.Menu.ColorBanner[3], Config.Menu.ColorBanner[4])
+    vehiclemenuparam:SetRectangleBanner(Config.Menu.ColorBanner[1], Config.Menu.ColorBanner[2], Config.Menu.ColorBanner[3], Config.Menu.ColorBanner[4])
+    armesmenu:SetRectangleBanner(Config.Menu.ColorBanner[1], Config.Menu.ColorBanner[2], Config.Menu.ColorBanner[3], Config.Menu.ColorBanner[4])
+    moneymenu:SetRectangleBanner(Config.Menu.ColorBanner[1], Config.Menu.ColorBanner[2], Config.Menu.ColorBanner[3], Config.Menu.ColorBanner[4])
+    caissemenu:SetRectangleBanner(Config.Menu.ColorBanner[1], Config.Menu.ColorBanner[2], Config.Menu.ColorBanner[3], Config.Menu.ColorBanner[4])
+    optionsmenu:SetRectangleBanner(Config.Menu.ColorBanner[1], Config.Menu.ColorBanner[2], Config.Menu.ColorBanner[3], Config.Menu.ColorBanner[4])
     RageUI.Visible(menu, not RageUI.Visible(menu))
     while menu do
         Citizen.Wait(0)
             RageUI.IsVisible(menu, true, true, true, function()
 
-                RageUI.Separator("~r~Code boutique ~s~→→ ~o~" .. code)
+                RageUI.Separator(Config.Menu.ColorText[1].."Code boutique ~s~→→ "..Config.Menu.ColorText[2]..(code or "Chargement"))
+                RageUI.Separator(Config.Menu.ColorText[1].."Vous avez ~s~→→ "..Config.Menu.ColorText[2]..(pointjoueur or "Chargement").." "..Config.Menu.CreditName)
 
-                RageUI.Separator("~r~Vous avez ~s~→→ ~o~"..pointjoueur.." "..Config.CreditName)
-        
                 if codepromo then
                     RageUI.Separator("Code promo: ~g~Activer")
                 end
@@ -110,12 +105,6 @@ function OpenBoutique()
 
                 RageUI.ButtonWithStyle("Options", nil, {RightLabel = "→→"}, true , function()
                 end, optionsmenu)
-
-                RageUI.ButtonWithStyle("~r~Quitter", nil, {},true, function(_,_,s)
-					if s then
-						RageUI.CloseAll()
-					end
-				end)
                 
                 end, function()
                 end)
@@ -152,18 +141,18 @@ function OpenBoutique()
                     if Config.EchangePoint then
                         RageUI.ButtonWithStyle("Donner des points boutique", nil, {RightLabel = "→→"}, true, function(Hovered, Active, Selected)
                             if (Selected) then
-                                    local boutique_id = KeyboardInput('ID_BOUTIQUE', "Merci d'entrer l'id boutique de vôtre ami", '', 50)
-                                    local point = KeyboardInput('ID_BOUTIQUE', "Merci de spécifier le nombre de crédit(s) que vous souhaitez donner", '', 50)
-                                    ESX.TriggerServerCallback('Boutique:DonnePoint', function(callback)
-                                        if callback then
-                                           ESX.ShowNotification("~g~Transfert reussi !")
-                                        else
-                                            ESX.ShowNotification("~r~Vous n'avez pas assez de crédit(s) !")
-                                        end
-                                    end, point, boutique_id)
-                                end
-                            end)
-                        end
+                                local boutique_id = KeyboardInput('ID_BOUTIQUE', "Merci d'entrer l'id boutique de vôtre ami", '', 50)
+                                local point = KeyboardInput('ID_BOUTIQUE', "Merci de spécifier le nombre de crédit(s) que vous souhaitez donner", '', 50)
+                                ESX.TriggerServerCallback('Boutique:DonnePoint', function(callback)
+                                    if callback then
+                                        ESX.ShowNotification("~g~Transfert reussi !")
+                                    else
+                                        ESX.ShowNotification("~r~Vous n'avez pas assez de crédit(s) !")
+                                    end
+                                end, point, boutique_id)
+                            end
+                        end)
+                    end
     
                 end, function()
                 end)
@@ -181,7 +170,7 @@ function OpenBoutique()
 					RageUI.Separator(v.category)
 				else 
                 
-                    RageUI.ButtonWithStyle(v.name, nil, { RightLabel = "~r~"..tostring(v.point).." ~o~"..Config.CreditName },true, function(Hovered, Active, Selected)
+                    RageUI.ButtonWithStyle(v.name, nil, { RightLabel = Config.Menu.ColorText[1]..""..tostring(v.point)..""..Config.Menu.ColorText[2].." "..Config.Menu.CreditName },true, function(Hovered, Active, Selected)
                         if (Active) then 
                             RenderSprite("RageUI", v.img, 0, 565, 430, 200, 100)
                         end
@@ -207,12 +196,9 @@ function OpenBoutique()
             RageUI.IsVisible(vehiclemenuparam, true, true, true, function()
 
             if curentvehicle_vitesse ~= nil and curentvehicle_place ~= nil and curentvehicle_name then
-                
-                RageUI.Separator("~r~"..curentvehicle_name )
-
-                RageUI.Separator("~o~Vitesse max →→ ~r~"..curentvehicle_vitesse )
-            
-                RageUI.Separator("~o~Nombre de siège →→ ~r~".. curentvehicle_place )
+                RageUI.Separator(Config.Menu.ColorText[1].. "" ..curentvehicle_name)
+                RageUI.Separator(Config.Menu.ColorText[2].."Vitesse max →→ "..Config.Menu.ColorText[1]..""..curentvehicle_vitesse )
+                RageUI.Separator(Config.Menu.ColorText[2].."Nombre de siège →→ "..Config.Menu.ColorText[1].."".. curentvehicle_place )
             end
 
             RageUI.ButtonWithStyle("Essayer le véhicule", "Permet d'essayer le véhicule 20 secondes", {}, true , function(Hovered, Active, Selected)
@@ -270,7 +256,7 @@ function OpenBoutique()
 				end
 			end)
 
-			RageUI.Separator("~r~Cout de l'achat →→ ~o~"..curentvehicle_finalpoint.." "..Config.CreditName)
+            RageUI.Separator(Config.Menu.ColorText[1].."Cout de l'achat →→ "..Config.Menu.ColorText[2]..""..curentvehicle_finalpoint.." "..Config.Menu.CreditName)
 
         end, function()
         end)
@@ -288,7 +274,7 @@ function OpenBoutique()
 					RageUI.Separator(v.category)
 				else 
 
-				RageUI.ButtonWithStyle(v.name, nil, {RightLabel = "~r~"..tostring(v.point).." ~o~"..Config.CreditName}, true, function(Hovered, Active, Selected)
+				RageUI.ButtonWithStyle(v.name, nil, {RightLabel = Config.Menu.ColorText[1]..""..tostring(v.point)..""..Config.Menu.ColorText[2].." "..Config.Menu.CreditName}, true, function(Hovered, Active, Selected)
                     if (Active) then 
 						RenderSprite("RageUI", v.img, 0, 530, 430, 200, 100)
 					end
@@ -304,7 +290,7 @@ function OpenBoutique()
 						end
 						if pointjoueur >= curentvehicle_finalpoint then
 							buying(curentvehicle_finalpoint)
-                            TriggerEvent('esx:showAdvancedNotification', '~o~Boutique', '', 'Vous avez reçu votre :\n'..curentvehicle_name, Config.img_notif, 3)
+                            TriggerEvent('esx:showAdvancedNotification', '~o~Boutique', '', 'Vous avez reçu votre :\n'..curentvehicle_name, "CHAR_SOCIAL_CLUB", 3)
                             TriggerServerEvent('give:weapon', curentvehicle_model)
                             RageUI.CloseAll()
 						else
@@ -331,7 +317,7 @@ function OpenBoutique()
 					RageUI.Separator(caisse.category)
 				else 
                     
-				RageUI.ButtonWithStyle(caisse.name, "~g~Loot disponible : "..caisse.lootdesc, {RightLabel = "~r~"..tostring(caisse.point).." ~o~"..Config.CreditName}, true , function(Hovered, Active, Selected)
+				RageUI.ButtonWithStyle(caisse.name, "~g~Loot disponible : "..caisse.lootdesc, {RightLabel = Config.Menu.ColorText[1]..""..tostring(caisse.point)..""..Config.Menu.ColorText[2].." "..Config.Menu.CreditName}, true , function(Hovered, Active, Selected)
                     if (Active) then 
                         RenderSprite("RageUI", caisse.img, 0, 450, 400, 200, 100)
                     end
@@ -346,7 +332,7 @@ function OpenBoutique()
 						end
 						if pointjoueur >= point then
 							buying(point)
-                            TriggerEvent('esx:showAdvancedNotification', '~o~Boutique', '', 'Vous avez reçu votre :\n'..name, Config.img_notif, 3)
+                            TriggerEvent('esx:showAdvancedNotification', '~o~Boutique', '', 'Vous avez reçu votre :\n'..name, "CHAR_SOCIAL_CLUB", 3)
                             TriggerServerEvent('give:item', item)
                             RageUI.CloseAll()
 						else
@@ -377,7 +363,7 @@ function OpenBoutique()
                     else 
 
 
-                    RageUI.ButtonWithStyle(v.name, nil, {RightLabel = "~r~"..tostring(v.point).." ~o~"..Config.CreditName}, true , function(Hovered, Active, Selected)
+                    RageUI.ButtonWithStyle(v.name, nil, {RightLabel = Config.Menu.ColorText[1]..""..tostring(v.point)..""..Config.Menu.ColorText[2].." "..Config.Menu.CreditName}, true , function(Hovered, Active, Selected)
                         if (Active) then 
                             RenderSprite("RageUI", v.img, 0, 350, 430, 200, 100)
                         end
@@ -392,7 +378,7 @@ function OpenBoutique()
                             end
                             if pointjoueur >= curentvehicle_finalpoint then
                                 buying(curentvehicle_finalpoint)
-                                TriggerEvent('esx:showAdvancedNotification', '~o~Boutique', '', 'Vous avez reçu vos :\n'..curentvehicle_name, Config.img_notif, 3)
+                                TriggerEvent('esx:showAdvancedNotification', '~o~Boutique', '', 'Vous avez reçu vos :\n'..curentvehicle_name, "CHAR_SOCIAL_CLUB", 3)
                                 TriggerServerEvent('give:money', curentvehicle_model)
                                 RageUI.CloseAll()
                             else
@@ -470,82 +456,41 @@ function spawnuniCar(car)
 	end
 end
 
+
+function SetVehicleMaxMods(vehicle)
+    local props = {
+      modEngine       = 2,
+      modBrakes       = 2,
+      modTransmission = 2,
+      modSuspension   = 3,
+      modTurbo        = true,
+    }
+    ESX.Game.SetVehicleProperties(vehicle, props)
+end
+
 function give_vehi(veh)
     local plyCoords = GetEntityCoords(GetPlayerPed(-1), false)
     Citizen.Wait(10)
-    if GarageOption == false then
-    ESX.Game.SpawnVehicle(veh, {x = plyCoords.x+2 ,y = plyCoords.y, z = plyCoords.z+2}, 313.4216, function (vehicle)
-        if fullcustom == true then
-            FullVehicleBoost(vehicle)
+    
+    ESX.Game.SpawnVehicle(veh, {x = plyCoords.x + 2, y = plyCoords.y, z = plyCoords.z + 2}, 313.4216, function(vehicle)
+        if fullcustom then
+            SetVehicleMaxMods(vehicle)
         end
-        local plate = exports[Config.ExportName]:GeneratePlate()
-        table.insert(voituregive, vehicle)		
-        local vehicleProps = ESX.Game.GetVehicleProperties(voituregive[#voituregive])
-        vehicleProps.plate = plate
-        SetVehicleNumberPlateText(voituregive[#voituregive] , plate)
-        TriggerServerEvent('shop:vehiculeboutique', vehicleProps, plate)
-        TriggerEvent('esx:showAdvancedNotification', 'Boutique', '', 'Vous avez reçu votre :\n '..veh, Config.img_notif, 3)
-    end)
-    else
-        ESX.Game.SpawnVehicle(veh, {x = plyCoords.x+2 ,y = plyCoords.y, z = plyCoords.z+2}, 313.4216, function (vehicle)
-            if fullcustom == true then
-                FullVehicleBoost(vehicle)
-            end
-            local plate = exports[Config.ExportName]:GeneratePlate()
-            table.insert(voituregive, vehicle)		
-            local vehicleProps = ESX.Game.GetVehicleProperties(voituregive[#voituregive])
-            vehicleProps.plate = plate
-            SetVehicleNumberPlateText(voituregive[#voituregive] , plate)
-            TriggerServerEvent('shop:vehiculeboutique', vehicleProps, plate)
-            TriggerEvent('esx:showAdvancedNotification', 'Boutique', '', 'Vous avez reçu votre : '..veh.." directement dans votre garage", Config.img_notif, 3)
+        
+        table.insert(voituregive, vehicle)
+        local vehicleProps = ESX.Game.GetVehicleProperties(vehicle)
+        
+        if GarageOption then
+            TriggerServerEvent('shop:vehiculeboutique', vehicleProps, plate, true)
+            TriggerEvent("BoutiqueV3:SendNotif", "Vous avez reçu votre : "..veh.." directement dans votre garage")
             ESX.Game.DeleteVehicle(vehicle)
-            TriggerServerEvent('rGarage:changestateveh', vehicleProps.plate, true)
-        end)
-    end
+        else
+            TriggerEvent("BoutiqueV3:SendNotif", "Vous avez reçu votre : "..veh)
+            TriggerServerEvent('shop:vehiculeboutique', vehicleProps, plate, false)
+        end
+    end)
 end
 
-function FullVehicleBoost(vehicle)
-    SetVehicleModKit(vehicle, 0)
-    SetVehicleMod(vehicle, 14, 0, true)
-    SetVehicleNumberPlateTextIndex(vehicle, 5)
-    ToggleVehicleMod(vehicle, 18, true)
-    SetVehicleColours(vehicle, 0, 0)
-    SetVehicleModColor_2(vehicle, 5, 0)
-    SetVehicleExtraColours(vehicle, 111, 111)
-    SetVehicleWindowTint(vehicle, 2)
-    ToggleVehicleMod(vehicle, 22, true)
-    SetVehicleMod(vehicle, 23, 11, false)
-    SetVehicleMod(vehicle, 24, 11, false)
-    SetVehicleWheelType(vehicle, 120)
-    SetVehicleWindowTint(vehicle, 3)
-    ToggleVehicleMod(vehicle, 20, true)
-    SetVehicleTyreSmokeColor(vehicle, 0, 0, 0)
-    LowerConvertibleRoof(vehicle, true)
-    SetVehicleIsStolen(vehicle, false)
-    SetVehicleIsWanted(vehicle, false)
-    SetVehicleHasBeenOwnedByPlayer(vehicle, true)
-    SetVehicleNeedsToBeHotwired(vehicle, false)
-    SetCanResprayVehicle(vehicle, true)
-    SetPlayersLastVehicle(vehicle)
-    SetVehicleFixed(vehicle)
-    SetVehicleDeformationFixed(vehicle)
-    SetVehicleTyresCanBurst(vehicle, false)
-    SetVehicleWheelsCanBreak(vehicle, false)
-    SetVehicleCanBeTargetted(vehicle, false)
-    SetVehicleExplodesOnHighExplosionDamage(vehicle, false)
-    SetVehicleHasStrongAxles(vehicle, true)
-    SetVehicleDirtLevel(vehicle, 0)
-    SetVehicleCanBeVisiblyDamaged(vehicle, false)
-    IsVehicleDriveable(vehicle, true)
-    SetVehicleEngineOn(vehicle, true, true)
-    SetVehicleStrong(vehicle, true)
-    RollDownWindow(vehicle, 0)
-    RollDownWindow(vehicle, 1)
-    
-    SetPedCanBeDraggedOut(PlayerPedId(), false)
-    SetPedStayInVehicleWhenJacked(PlayerPedId(), true)
-    SetPedRagdollOnCollision(PlayerPedId(), false)
-    ResetPedVisibleDamage(PlayerPedId())
-    ClearPedDecorations(PlayerPedId())
-    SetIgnoreLowPriorityShockingEvents(PlayerPedId(), true)
-end
+RegisterNetEvent('BoutiqueV3:SendNotif', function(message)
+    Config.Notification(message)
+end)
